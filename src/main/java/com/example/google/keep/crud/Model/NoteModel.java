@@ -13,4 +13,9 @@ public class NoteModel {
     private String id;
     private String createdBy;
     private String description;
+    private String title;
 }
+
+
+
+

@@ -14,16 +14,21 @@ import org.springframework.web.bind.annotation.*;
 public class NotesController {
     Logger logger= LoggerFactory.getLogger(NotesController.class);
     @Autowired
-    private NoteRepository repository;
+     NoteRepository repository;
 
     @Autowired
-    private NotesService notesService;
+     NotesService notesService;
 
     @PostMapping("/createNote")
     public ResponseEntity<?> createNote(@RequestBody NoteModel model){
         logger.info("Creating new note");
       return  notesService.createNote(model);
 
+    }
+    @GetMapping("/getByTitle/{title}")
+    public  ResponseEntity<?> getByTitle(@PathVariable String title){
+        logger.info("fetching by title");
+        return notesService.getByTitle(title);
     }
 
     @GetMapping("/getNotes")

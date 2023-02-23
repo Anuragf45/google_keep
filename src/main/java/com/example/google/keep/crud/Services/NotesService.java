@@ -18,13 +18,22 @@ import java.util.Optional;
 public class NotesService {
     Logger logger= LoggerFactory.getLogger(NotesService.class);
     @Autowired
-    private NoteRepository repository;
+     NoteRepository repository;
     @Autowired
-    private NoteException exception;
+     NoteException exception;
 
     public ResponseEntity<List<NoteModel>> getAllNotes(){
         logger.info("Fetching all the notes");
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
+    }
+    public ResponseEntity<?> getByTitle(String title){
+        logger.info("fetching by title");
+        Optional<NoteModel> optional1=repository.searchByTitle(title);
+        if(optional1.isPresent()){
+            return new ResponseEntity<>(repository.findNoteByRegexString(title),HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("No Notes found with this title",HttpStatus.OK);
+        }
     }
 
     public  ResponseEntity<?> createNote(NoteModel model){
@@ -53,7 +62,6 @@ public class NotesService {
             logger.info("deleting the note");
             repository.deleteById(id);
             return new ResponseEntity<>("User Deleted Successfully",HttpStatus.OK);
-
         }else{
             return new ResponseEntity<>("No note found with this id",HttpStatus.OK);
         }
